@@ -154,7 +154,13 @@ class Codemaps :
 
     def __encode_and_pad(self, sentences, value_fn, pad_value) :
         encoded = [[value_fn(w) for w in s] for s in sentences]
-        return pad_sequences(maxlen=self.maxlen, sequences=encoded, padding="post", value=pad_value)
+        return pad_sequences(
+            maxlen=self.maxlen,
+            sequences=encoded,
+            padding="post",
+            truncating="post",
+            value=pad_value
+        )
 
     def __gazetteer_path(self, filename) :
         return os.path.normpath(
@@ -361,6 +367,7 @@ class Codemaps :
             maxlen=self.maxlen,
             sequences=[self.__encode_gazetteer_sentence(s) for s in sentences],
             padding="post",
+            truncating="post",
             value=self.gazetteer_index['PAD']
         )
         # return encoded sequences
@@ -371,7 +378,13 @@ class Codemaps :
     def encode_labels(self, data) :
         # encode and pad sentence labels 
         Y = [[self.label_index[w['tag']] for w in s] for s in data.sentences()]
-        Y = pad_sequences(maxlen=self.maxlen, sequences=Y, padding="post", value=self.label_index["PAD"])
+        Y = pad_sequences(
+            maxlen=self.maxlen,
+            sequences=Y,
+            padding="post",
+            truncating="post",
+            value=self.label_index["PAD"]
+        )
         return np.array(Y)
 
     ## -------- get word index size ---------

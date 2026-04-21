@@ -5,7 +5,7 @@ from contextlib import redirect_stdout
 
 from tensorflow.keras import Input
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import LSTM, Embedding, Dense, TimeDistributed, Dropout, Bidirectional, concatenate, Lambda
+from tensorflow.keras.layers import LSTM, Embedding, Dense, TimeDistributed, Dropout, Bidirectional, concatenate
 
 from dataset import *
 from codemaps import *
@@ -25,36 +25,37 @@ def build_network(codes) :
    max_len = codes.maxlen
 
    inptW = Input(shape=(max_len,)) # word input layer & embeddings
+   # Use the main word sequence as the single source of truth for masking.
    embW = Embedding(input_dim=n_words, output_dim=100,
                     input_length=max_len, mask_zero=True)(inptW)  
 
    inptLW = Input(shape=(max_len,)) # lowercased word input layer & embeddings
    embLW = Embedding(input_dim=n_lc_words, output_dim=100,
-                     input_length=max_len, mask_zero=True)(inptLW)
+                     input_length=max_len, mask_zero=False)(inptLW)
    
    inptS = Input(shape=(max_len,))  # suf input layer & embeddings
    embS = Embedding(input_dim=n_sufs, output_dim=50,
-                    input_length=max_len, mask_zero=True)(inptS) 
+                    input_length=max_len, mask_zero=False)(inptS) 
 
    inptC = Input(shape=(max_len,))  # capitalization feature
    embC = Embedding(input_dim=n_caps, output_dim=8,
-                    input_length=max_len, mask_zero=True)(inptC)
+                    input_length=max_len, mask_zero=False)(inptC)
 
    inptN = Input(shape=(max_len,))  # number feature
    embN = Embedding(input_dim=n_nums, output_dim=6,
-                    input_length=max_len, mask_zero=True)(inptN)
+                    input_length=max_len, mask_zero=False)(inptN)
 
    inptD = Input(shape=(max_len,))  # dash feature
    embD = Embedding(input_dim=n_dashes, output_dim=4,
-                    input_length=max_len, mask_zero=True)(inptD)
+                    input_length=max_len, mask_zero=False)(inptD)
 
    inptSh = Input(shape=(max_len,))  # token shape feature
    embSh = Embedding(input_dim=n_shapes, output_dim=20,
-                     input_length=max_len, mask_zero=True)(inptSh)
+                     input_length=max_len, mask_zero=False)(inptSh)
 
    inptG = Input(shape=(max_len,))  # gazetteer feature
    embG = Embedding(input_dim=n_gazetteer, output_dim=8,
-                    input_length=max_len, mask_zero=True)(inptG)
+                    input_length=max_len, mask_zero=False)(inptG)
 
    dropW = Dropout(0.1)(embW)
    dropLW = Dropout(0.1)(embLW)
