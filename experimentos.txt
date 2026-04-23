@@ -1,8 +1,0 @@
-Experimento 1:
-Eso es lo esperable. EarlyStopping ha cortado el entrenamiento cuando val_loss dejó de mejorar, así que evitas épocas que ya no aportaban casi nada. Si el rendimiento final es prácticamente igual, entonces el cambio ha sido útil: mismo resultado con menos tiempo.
-
-ReduceLROnPlateau probablemente no ha cambiado mucho el resultado porque tu modelo ya estaba convergiendo bastante bien. En ese escenario suele actuar más como mecanismo de ajuste fino que como algo que transforme el rendimiento. Puedes comentarlo así en la memoria:
-
-"Se incorporaron las estrategias EarlyStopping y ReduceLROnPlateau para hacer el entrenamiento más eficiente. Los resultados obtenidos fueron similares a los anteriores, pero el modelo alcanzó su mejor rendimiento en menos épocas, reduciendo el tiempo de entrenamiento sin pérdida apreciable de calidad."
-
-Si quieres, te redacto ese párrafo en tono más académico para pegarlo en la práctica.
